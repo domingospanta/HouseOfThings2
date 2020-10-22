@@ -1,18 +1,18 @@
 package pt.feup.ads.HouseOfThings.rules;
 
-import pt.feup.ads.HouseOfThings.devices.interfaces.OutputDevice;
-import pt.feup.ads.HouseOfThings.devices.interfaces.InputDevice;
+import pt.feup.ads.HouseOfThings.devices.interfaces.OutputDeviceI;
+import pt.feup.ads.HouseOfThings.devices.interfaces.InputDeviceI;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 public class Rule {
-    private final OutputDevice sourceDevice;
-    private final InputDevice targetDevice;
+    private final OutputDeviceI sourceDevice;
+    private final InputDeviceI targetDevice;
     private final String triggerCondition;
 
-    public Rule(OutputDevice sourceDevice, InputDevice targetDevice, String condition){
+    public Rule(OutputDeviceI sourceDevice, InputDeviceI targetDevice, String condition){
         this.sourceDevice = sourceDevice;
         this.targetDevice = targetDevice;
         this.triggerCondition = condition.trim();
@@ -25,14 +25,14 @@ public class Rule {
         try {
             Boolean result = (Boolean) engine.eval(condition);
             if(result){
-                System.out.println("RULE CONDITION TRIPPED BY " + sourceDevice.getDeviceName() + ".");
+                targetDevice.execute(value);
             }
         } catch (ScriptException e) {
             e.printStackTrace();
         }
     }
 
-    public OutputDevice getSourceDevice(){
+    public OutputDeviceI getSourceDevice(){
         return sourceDevice;
     }
 }

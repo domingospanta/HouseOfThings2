@@ -1,7 +1,7 @@
 package pt.feup.ads.HouseOfThings.managers;
 
-import pt.feup.ads.HouseOfThings.devices.interfaces.Device;
-import pt.feup.ads.HouseOfThings.devices.interfaces.OutputDevice;
+import pt.feup.ads.HouseOfThings.devices.interfaces.DeviceI;
+import pt.feup.ads.HouseOfThings.devices.interfaces.OutputDeviceI;
 import pt.feup.ads.HouseOfThings.managers.observers.TelemetryChangeObserverI;
 import pt.feup.ads.HouseOfThings.rules.Rule;
 
@@ -24,7 +24,7 @@ public class RulesManager implements TelemetryChangeObserverI {
         rulesList.add(rule);
     }
 
-    public void verifyRules(OutputDevice device, Integer value){
+    public void verifyRules(OutputDeviceI device, Integer value){
         for(Rule rule: rulesList){
             if(rule.getSourceDevice() == device){
                 rule.verify(value);
@@ -33,7 +33,7 @@ public class RulesManager implements TelemetryChangeObserverI {
     }
 
     @Override
-    public void notifyObserver(Device device, Integer value) {
-        verifyRules((OutputDevice) device, value);
+    public void notifyObserver(DeviceI device, Integer value) {
+        verifyRules((OutputDeviceI) device, value);
     }
 }

@@ -1,15 +1,15 @@
 package pt.feup.ads.HouseOfThings.managers;
 
-import pt.feup.ads.HouseOfThings.devices.interfaces.Device;
-import pt.feup.ads.HouseOfThings.devices.interfaces.OutputDevice;
-import pt.feup.ads.HouseOfThings.managers.observers.DeviceManagerObserverI;
+import pt.feup.ads.HouseOfThings.devices.adapters.DeviceAdapter;
+import pt.feup.ads.HouseOfThings.devices.interfaces.DeviceI;
+import pt.feup.ads.HouseOfThings.managers.observers.ConnectionChangeObserverI;
 import pt.feup.ads.HouseOfThings.managers.observers.TelemetryChangeObserverI;
 
 import java.util.*;
 
-public class DeviceManager implements TelemetryChangeObserverI{
-    private final List<Device> deviceList;
-    private final List<DeviceManagerObserverI> connectionObservers;
+public class DeviceManager{
+    private final List<DeviceAdapter> deviceList;
+    private final List<ConnectionChangeObserverI> connectionObservers;
     private final List<TelemetryChangeObserverI> telemetryObservers;
 
     private static final DeviceManager instance = new DeviceManager();
@@ -19,31 +19,29 @@ public class DeviceManager implements TelemetryChangeObserverI{
     }
 
     public DeviceManager(){
-        deviceList = new ArrayList<Device>();
-        connectionObservers = new ArrayList<DeviceManagerObserverI>();
+        deviceList = new ArrayList<DeviceAdapter>();
+        connectionObservers = new ArrayList<ConnectionChangeObserverI>();
         telemetryObservers = new ArrayList<TelemetryChangeObserverI>();
     }
 
-    public void installDevice(Device device){
+    public void installDevice(DeviceAdapter device){
         deviceList.add(device);
         System.out.println(device.getDeviceName());
         device.standby();
         device.run();
 
-        if(device instanceof OutputDevice){
-            ((OutputDevice)device).addTelemetryObserver(this);
-        }
+        device.setDeviceManager(this);
 
-        for(DeviceManagerObserverI dObserver: connectionObservers){
+        for(ConnectionChangeObserverI dObserver: connectionObservers){
             dObserver.notifyObserver(device);
         }
     }
 
-    public List<Device> getDeviceList(){
+    public List<DeviceAdapter> getDeviceList(){
         return deviceList;
     }
 
-    public void addConnectionObserver(DeviceManagerObserverI observer){
+    public void addConnectionObserver(ConnectionChangeObserverI observer){
         connectionObservers.add(observer);
     }
 
@@ -51,14 +49,13 @@ public class DeviceManager implements TelemetryChangeObserverI{
         telemetryObservers.add(observer);
     }
 
-    public void removeConnectionObserver(DeviceManagerObserverI observer){
+    public void removeConnectionObserver(ConnectionChangeObserverI observer){
         connectionObservers.remove(observer);
     }
 
-    @Override
-    public void notifyObserver(Device device, Integer value) {
-        for(TelemetryChangeObserverI telemetryObserver: telemetryObservers){
-            telemetryObserver.notifyObserver(device, value);
+    public void notifyTelemetryChange(DeviceAdapter device, Integer value) {
+        for(TelemetryChangeObserverI observer: telemetryObservers){
+            observer.notifyObserver(device, value);
         }
     }
 }

@@ -1,51 +1,40 @@
 package pt.feup.ads.HouseOfThings.devices;
 
-import pt.feup.ads.HouseOfThings.devices.interfaces.InputDevice;
+import pt.feup.ads.HouseOfThings.devices.adapters.InputDeviceAdapter;
+import pt.feup.ads.HouseOfThings.managers.DeviceManager;
 
-import java.util.*;
 
-public class ActuatorDevice implements InputDevice {
-    private String deviceStatus;
-    private Timer timer;
-    private List<Integer> telemetryLog;
-    private String deviceName = "Unnamed Device";
+public class ActuatorDevice extends InputDeviceAdapter {
 
     public ActuatorDevice(){
-        deviceStatus = STATUS_STOPPED;
-        timer = new Timer();
-        telemetryLog = new ArrayList<Integer>();
-        deviceName = "Actuator";
+        super();
+    }
+
+    public ActuatorDevice(String deviceName){
+        super(deviceName);
+    }
+
+    public ActuatorDevice(String deviceName, DeviceManager deviceManager){
+        super(deviceName, deviceManager);
     }
 
     @Override
-    public String getDeviceName() {
-        return deviceName;
+    public void execute(Integer value) {
+        super.execute(value);
+
+        if(value == 0){
+            closeWindows();
+        }else{
+            openWindows();
+        }
+
     }
 
-    public void execute() {
-        System.out.println("Output Device Executed");
+    private void closeWindows(){
+        System.out.println("Closing Windows");
     }
 
-    public String getStatus() {
-        return deviceStatus;
-    }
-
-    public void run() {
-        deviceStatus = STATUS_RUNNING;
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Random rand = new Random();
-                telemetryLog.add(rand.nextInt(3));
-            }
-        }, 0, 5000);
-    }
-
-    public void standby() {
-        deviceStatus = STATUS_STANDBY;
-    }
-
-    public void stop() {
-        deviceStatus = STATUS_STOPPED;
+    private void openWindows(){
+        System.out.println("Opening Windows");
     }
 }
