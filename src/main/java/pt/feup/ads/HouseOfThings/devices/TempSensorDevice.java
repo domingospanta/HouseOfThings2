@@ -11,7 +11,11 @@ public class TempSensorDevice implements Device{
         return STATUS_OK;
     }
 
-    public Object getTelemetry() {
+    public Integer getTelemetry() {
         return 20;
+    }
+
+    public void execute() {
+
     }
 }

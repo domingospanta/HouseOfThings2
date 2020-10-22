@@ -1,4 +1,4 @@
-package pt.feup.ads.HouseOfThings.connection;
+package pt.feup.ads.HouseOfThings.managers;
 
 import pt.feup.ads.HouseOfThings.devices.Device;
 import pt.feup.ads.HouseOfThings.plugins.ConnectionPlugin;
@@ -8,13 +8,11 @@ import java.util.List;
 
 public class ConnectionManager {
     private final List<ConnectionPlugin> connectionPluginList;
-    private final List<Device> deviceList;
 
     private static final ConnectionManager instance = new ConnectionManager();
 
     public ConnectionManager(){
         connectionPluginList = new ArrayList<ConnectionPlugin>();
-        deviceList = new ArrayList<Device>();
     }
 
     public static ConnectionManager getInstance(){
@@ -29,16 +27,22 @@ public class ConnectionManager {
         return connectionPluginList;
     }
 
-    public List<Device> getDeviceList(){
-        return deviceList;
-    }
-
     public List<Device> scanDevices(){
+        List<Device> deviceList = new ArrayList<Device>();
 
         for(ConnectionPlugin connectionPlugin: connectionPluginList){
             List<Device> discoveredDevices = connectionPlugin.scanDevices();
             deviceList.addAll(discoveredDevices);
         }
         return deviceList;
+    }
+
+    public void scanAndInstallDevices(){
+        for(ConnectionPlugin connectionPlugin: connectionPluginList){
+            List<Device> discoveredDevices = connectionPlugin.scanDevices();
+            for(Device device:discoveredDevices){
+                DeviceManager.getInstance().installDevice(device);
+            }
+        }
     }
 }
