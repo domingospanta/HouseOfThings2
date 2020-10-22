@@ -1,6 +1,6 @@
 package pt.feup.ads.HouseOfThings.managers;
 
-import pt.feup.ads.HouseOfThings.devices.Device;
+import pt.feup.ads.HouseOfThings.devices.interfaces.Device;
 import pt.feup.ads.HouseOfThings.plugins.ConnectionPlugin;
 
 import java.util.ArrayList;
@@ -25,16 +25,6 @@ public class ConnectionManager {
 
     public List<ConnectionPlugin> getConnnectionPluginList(){
         return connectionPluginList;
-    }
-
-    public List<Device> scanDevices(){
-        List<Device> deviceList = new ArrayList<Device>();
-
-        for(ConnectionPlugin connectionPlugin: connectionPluginList){
-            List<Device> discoveredDevices = connectionPlugin.scanDevices();
-            deviceList.addAll(discoveredDevices);
-        }
-        return deviceList;
     }
 
     public void scanAndInstallDevices(){

@@ -1,6 +1,6 @@
 package pt.feup.ads.HouseOfThings.plugins;
 
-import pt.feup.ads.HouseOfThings.devices.Device;
+import pt.feup.ads.HouseOfThings.devices.interfaces.Device;
 
 import java.util.List;
 
