@@ -3,14 +3,16 @@ package pt.feup.ads.HouseOfThings.devices.adapters;
 import pt.feup.ads.HouseOfThings.devices.interfaces.DeviceI;
 import pt.feup.ads.HouseOfThings.managers.DeviceManager;
 
+import java.util.Optional;
+
 public abstract class DeviceAdapter implements DeviceI {
     private String deviceStatus = DEFAULT_STATUS;
     private String deviceName = DEFAULT_NAME;
 
     private DeviceManager deviceManager;
 
-    public DeviceManager getDeviceManager() {
-        return deviceManager;
+    public Optional<DeviceManager> getDeviceManager() {
+        return Optional.ofNullable(deviceManager);
     }
 
     public void setDeviceManager(DeviceManager deviceManager) {
@@ -58,10 +60,10 @@ public abstract class DeviceAdapter implements DeviceI {
     public void setDeviceName(String deviceName) {
         this.deviceName = deviceName;
     }
-
+    /*
     @Override
     public abstract boolean isInputDevice();
 
     @Override
-    public abstract boolean isOutputDevice();
+    public abstract boolean isOutputDevice();*/
 }

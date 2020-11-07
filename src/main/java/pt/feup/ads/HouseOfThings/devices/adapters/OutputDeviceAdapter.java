@@ -41,13 +41,15 @@ public class OutputDeviceAdapter extends DeviceAdapter implements OutputDeviceI 
         super.run();
         final DeviceAdapter thisDevice = this;
         timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
+           @Override
+           public void run() {
                 Random rand = new Random();
                 Integer randomNumber = rand.nextInt(3);
 
                 if(telemetryLog.size() == 0 || !telemetryLog.get(telemetryLog.size() - 1).equals(randomNumber)){
-                    getDeviceManager().notifyTelemetryChange(thisDevice, randomNumber);
+                    getDeviceManager().ifPresent(deviceManager -> {
+                        deviceManager.notifyTelemetryChange(thisDevice, randomNumber);
+                    });
                 }
 
                 System.out.println(getDeviceName() + " value: " + randomNumber);
