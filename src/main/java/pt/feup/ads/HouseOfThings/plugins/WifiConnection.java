@@ -11,9 +11,9 @@ public class WifiConnection implements ConnectionPlugin{
     public List<Device> scanDevices() {
         List<Device> deviceList = new ArrayList<Device>();
 
-        deviceList.add(DeviceFactory.getInstance().createDevice("TemperatureDevice"));
-        deviceList.add(DeviceFactory.getInstance().createDevice("ActuatorDevice"));
-        deviceList.add(DeviceFactory.getInstance().createDevice("WindspeedDevice"));
+        //deviceList.add(DeviceFactory.getInstance().createDevice("TemperatureDevice"));
+        //deviceList.add(DeviceFactory.getInstance().createDevice("ActuatorDevice"));
+        //deviceList.add(DeviceFactory.getInstance().createDevice("WindspeedDevice"));
 
         return deviceList;
     }

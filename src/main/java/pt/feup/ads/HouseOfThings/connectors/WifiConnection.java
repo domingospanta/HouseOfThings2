@@ -15,12 +15,13 @@ public class WifiConnection extends ConnectionAdapter {
 
     @Override
     public List<DeviceAdapter> scanDevices() {
-        System.out.println(getName() + " is scanning Devices...");
+       /* System.out.println(getName() + " is scanning Devices...");
         List<DeviceAdapter> deviceList = new ArrayList<DeviceAdapter>();
 
         deviceList.add(DeviceFactory.getInstance().createDevice("BulbDevice", "Light Bulb Device"));
         deviceList.add(DeviceFactory.getInstance().createDevice("LightDetectionDevice", "Light Detection Device"));
 
-        return deviceList;
+        return deviceList;*/
+        return super.scanDevices();
     }
 }

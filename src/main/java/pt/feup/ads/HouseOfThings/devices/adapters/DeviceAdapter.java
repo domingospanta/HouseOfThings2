@@ -1,5 +1,6 @@
 package pt.feup.ads.HouseOfThings.devices.adapters;
 
+import pt.feup.ads.HouseOfThings.connectors.adapters.ConnectionAdapter;
 import pt.feup.ads.HouseOfThings.devices.interfaces.DeviceI;
 import pt.feup.ads.HouseOfThings.managers.DeviceManager;
 
@@ -11,12 +12,22 @@ public abstract class DeviceAdapter implements DeviceI {
 
     private DeviceManager deviceManager;
 
+    private ConnectionAdapter connector;
+
     public Optional<DeviceManager> getDeviceManager() {
         return Optional.ofNullable(deviceManager);
     }
 
     public void setDeviceManager(DeviceManager deviceManager) {
         this.deviceManager = deviceManager;
+    }
+
+    public Optional<ConnectionAdapter> getDeviceConnector() {
+        return Optional.ofNullable(connector);
+    }
+
+    public void setConnector(ConnectionAdapter connector) {
+        this.connector = connector;
     }
 
     public DeviceAdapter(){

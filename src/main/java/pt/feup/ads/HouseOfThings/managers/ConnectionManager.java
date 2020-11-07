@@ -7,22 +7,24 @@ import pt.feup.ads.HouseOfThings.connectors.interfaces.ConnectionPlugin;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ConnectionManager {
-    private final List<ConnectionPlugin> connectionPluginList;
+    private Set<ConnectionPlugin> connectionPluginList;
 
     private static final ConnectionManager instance = new ConnectionManager();
 
     public ConnectionManager(){
-        connectionPluginList = new ArrayList<ConnectionPlugin>();
+        connectionPluginList = new HashSet<>();
     }
 
     public static ConnectionManager getInstance(){
         return instance;
     }
 
-    public void installPlugin(String className,String deviceName){
+    public ConnectionAdapter installPlugin(String className,String deviceName){
 
         String classUrl = "pt.feup.ads.HouseOfThings.connectors." + className;
         ConnectionAdapter connector = null;
@@ -43,9 +45,10 @@ public class ConnectionManager {
         }
 
         connectionPluginList.add(connector);
+        return connector;
     }
 
-    public List<ConnectionPlugin> getConnnectionPluginList(){
+    public Set<ConnectionPlugin> getConnectionPluginList(){
         return connectionPluginList;
     }
 
@@ -58,6 +61,12 @@ public class ConnectionManager {
         }
     }
 
+    public void connectAndInstallDevice(DeviceAdapter device, ConnectionAdapter connectionAdapter){
+        device.setConnector(connectionAdapter);
+        DeviceManager.getInstance().installDevice(device);
+        connectionAdapter.scanDevices();
+    }
+
     public void connectAndInstallDevice(DeviceAdapter device){
         DeviceManager.getInstance().installDevice(device);
     }
@@ -66,5 +75,13 @@ public class ConnectionManager {
         for(DeviceAdapter device: deviceList){
             DeviceManager.getInstance().installDevice(device);
         }
+    }
+
+    public void uninstallAll(){
+        connectionPluginList = new HashSet<>();
+    }
+
+    public int connectionCount(){
+        return connectionPluginList.size();
     }
 }
